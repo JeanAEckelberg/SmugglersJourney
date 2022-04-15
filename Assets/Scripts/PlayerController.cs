@@ -33,30 +33,36 @@ public class PlayerController : MonoBehaviour
     {
         _horizontalInput = Input.GetAxis("Mouse X");
         _verticalInput = Input.GetAxis("Mouse Y");
-        
 
         transform.Rotate(Vector3.up * (_horizontalInput * horizontalRotationSpeed * Time.deltaTime));
         _playerCamera.Rotate(Vector3.left * (_verticalInput * verticalRotationSpeed * Time.deltaTime));
         
-        _localX = _playerCamera.localEulerAngles.x;
-        if (_localX > 180) _localX -= 360;
-        if (Mathf.Abs(_localX) > verticalRestriction)
-            _playerCamera.localEulerAngles = new Vector3(Mathf.Clamp(_localX,-verticalRestriction,verticalRestriction), 0, 0);
+        LimitX();
     }
 
     private void FixedUpdate()
     {
         _direction = Vector3.Normalize(transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal"));
 
-        _yVelocity.y += _gravity * Time.deltaTime;
-        
-        if (_moveController.isGrounded) _yVelocity = Vector3.zero;
-
-        if (Input.GetKey(KeyCode.Space) && _moveController.isGrounded)
-        {
-            _yVelocity = new Vector3(0,Mathf.Sqrt(jumpHeight * -2f * _gravity),0);
-        }
+        _yVelocity = SetYVelocity();
         
         _moveController.Move((_yVelocity + _direction * speed) * Time.deltaTime );
+    }
+
+    private Vector3 SetYVelocity()
+    {
+        if (!_moveController.isGrounded) 
+            return new Vector3(_yVelocity.x,_yVelocity.y+_gravity*Time.deltaTime,_yVelocity.z);
+        if (Input.GetKey(KeyCode.Space)) 
+            return new Vector3(0,Mathf.Sqrt(jumpHeight * -2f * _gravity),0);
+        return Vector3.zero;
+    }
+
+    private void LimitX()
+    {
+        _localX = _playerCamera.localEulerAngles.x;
+        if (_localX > 180) _localX -= 360;
+        if (Mathf.Abs(_localX) > verticalRestriction)
+            _playerCamera.localEulerAngles = new Vector3(Mathf.Clamp(_localX,-verticalRestriction,verticalRestriction), 0, 0);
     }
 }
