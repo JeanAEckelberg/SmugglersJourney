@@ -236,7 +236,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.51
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -254,10 +254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ebb4ef748036024e81c3a356c2f3497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  horizontalRotationSpeed: 100
+  speed: 5
+  horizontalRotationSpeed: 200
   verticalRotationSpeed: 100
   verticalRestriction: 60
+  jumpHeight: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
