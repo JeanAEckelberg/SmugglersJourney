@@ -10,7 +10,7 @@ public class InventoryManager : MonoBehaviour
     
     [SerializeField] private Vector3 leftPosition, leftRotation, rightPosition, rightRotation;
     
-    [SerializeField] float pickupRange = 5f;
+    [SerializeField] float pickupRange = 3f;
     
     private Vector3 _handPosition, _handRotation;
     private GameObject _hand;
@@ -42,12 +42,12 @@ public class InventoryManager : MonoBehaviour
     private void PickUp()
     {
         if(!Physics.Raycast(
-               Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)), 
+               _mainCam.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)), 
                out hit, pickupRange
                )) return;
         
         if (!hit.collider.gameObject.TryGetComponent(out ObjectInfo info)) return;
-        
+        //if (!hit.collider.gameObject.TryGetComponent(out Interactable info)) return;
         if(!info.grabbable) return;
         
         Drop();
@@ -55,6 +55,7 @@ public class InventoryManager : MonoBehaviour
         _toPickup.transform.SetPositionAndRotation(_handPosition, Quaternion.Euler(_handRotation));
         _toPickup.transform.SetParent(_mainCam.transform,false);
         info.Equipped = true;
+        //hit.collider.gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     void Drop()

@@ -38,13 +38,10 @@ public class PlayerController : MonoBehaviour
         _verticalInput = Input.GetAxis("Mouse Y");
 
         if (Input.GetMouseButtonDown(0))
-        {
             _playerInventory.Invoke("PickUpLeft",0f);
-        }
+        
         if (Input.GetMouseButtonDown(1))
-        {
             _playerInventory.Invoke("PickUpRight",0f);
-        }
 
         transform.Rotate(Vector3.up * (_horizontalInput * horizontalRotationSpeed * Time.deltaTime));
         _playerCamera.Rotate(Vector3.left * (_verticalInput * verticalRotationSpeed * Time.deltaTime));
