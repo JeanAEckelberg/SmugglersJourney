@@ -6,37 +6,44 @@ public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] KeyCode interactKey;
     [SerializeField] Camera playerCam;
-    [SerializeField] Vector3 interactionRay;
+    private Vector3 interactionRay = new Vector3(.5f, .5f, 0);
     [SerializeField] float interactDistance;
-    [SerializeField] LayerMask interactLayer;
     private Interactable currentInteract;
+    private GameObject lastInteract;
+    private bool isFocused;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        CheckInteraction();
-        if (Input.GetKeyDown(interactKey) && currentInteract !=null && Physics.Raycast(playerCam.ViewportPointToRay(interactionRay), out RaycastHit hit, interactDistance, interactLayer)){
-            currentInteract.Interact();
-        }
+        if (Input.GetKeyDown(interactKey) && lastInteract!=null) lastInteract.GetComponent<Interactable>().Interact();
     }
 
-    public void CheckInteraction()
+    void FixedUpdate()
     {
-        if(Physics.Raycast(playerCam.ViewportPointToRay(interactionRay), out RaycastHit hit, interactDistance)){
-            if(hit.collider.gameObject.layer == 10 && (currentInteract == null || hit.collider.gameObject.GetInstanceID() != currentInteract.GetInstanceID()))
-            {
-                hit.collider.TryGetComponent(out currentInteract);
-
-                if (currentInteract)
-                {
-                    currentInteract.PlayerFocus();
-                }
-            }
-        }
-        else if (currentInteract)
+        if (!Physics.Raycast(playerCam.ViewportPointToRay(interactionRay), out RaycastHit hit, interactDistance))
         {
-            currentInteract.PlayerUnfocus();
-            currentInteract = null;
+            CleanUp();
+            return;
         }
+
+        if (!hit.collider.gameObject.Equals(lastInteract)) CleanUp();
+
+        if (!hit.collider.TryGetComponent(out currentInteract)) return;
+
+        lastInteract = hit.collider.gameObject;
+
+        if (isFocused) return;
+        
+        currentInteract.PlayerFocus();    
+        isFocused = true;
     }
+
+    public void CleanUp()
+    {
+        isFocused = false;
+        if (lastInteract==null) return;
+        lastInteract.GetComponent<Interactable>().PlayerUnfocus();
+        lastInteract = null;
+    }
+    
 }
