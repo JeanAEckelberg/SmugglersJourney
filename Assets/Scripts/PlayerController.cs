@@ -14,15 +14,18 @@ public class PlayerController : MonoBehaviour
     private Vector3 _yVelocity;
     private float _horizontalInput;
     private float _verticalInput;
+    
     private CharacterController _moveController;
     private Transform _playerCamera;
-    
+    private InventoryManager _playerInventory;
     
     
     // Start is called before the first frame update
     void Start()
     {
         _moveController = gameObject.GetComponent<CharacterController>();
+        _playerInventory = gameObject.GetComponent<InventoryManager>();
+        
         _playerCamera = transform.Find("Main Camera");
         _gravity = -9.81f;
         _yVelocity= new Vector3(0, _gravity, 0);
@@ -33,6 +36,12 @@ public class PlayerController : MonoBehaviour
     {
         _horizontalInput = Input.GetAxis("Mouse X");
         _verticalInput = Input.GetAxis("Mouse Y");
+
+        if (Input.GetMouseButtonDown(0))
+            _playerInventory.Invoke("PickUpLeft",0f);
+        
+        if (Input.GetMouseButtonDown(1))
+            _playerInventory.Invoke("PickUpRight",0f);
 
         transform.Rotate(Vector3.up * (_horizontalInput * horizontalRotationSpeed * Time.deltaTime));
         _playerCamera.Rotate(Vector3.left * (_verticalInput * verticalRotationSpeed * Time.deltaTime));
