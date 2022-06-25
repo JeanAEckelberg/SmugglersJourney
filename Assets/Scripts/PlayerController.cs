@@ -7,7 +7,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float verticalRotationSpeed;
     [SerializeField] float verticalRestriction;
     [SerializeField] float jumpHeight;
-    
+    [SerializeField] KeyCode sprintKey;
+
     private float _localX;
     private Vector3 _direction;
     private float _gravity;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         _moveController = gameObject.GetComponent<CharacterController>();
         _playerInventory = gameObject.GetComponent<InventoryManager>();
         
@@ -54,8 +57,9 @@ public class PlayerController : MonoBehaviour
         _direction = Vector3.Normalize(transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal"));
 
         _yVelocity = SetYVelocity();
-        
-        _moveController.Move((_yVelocity + _direction * speed) * Time.deltaTime );
+        float moveSpeed = speed;
+        if (Input.GetKey(sprintKey)) { moveSpeed = speed * 2; }
+        _moveController.Move((_yVelocity + _direction * moveSpeed) * Time.deltaTime );
     }
 
     private Vector3 SetYVelocity()

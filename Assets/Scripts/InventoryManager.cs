@@ -64,4 +64,9 @@ public class InventoryManager : MonoBehaviour
             Destroy(_hand);
             _hand= null;
     }
+
+    public GameObject[] GetInventory()
+    {
+        return new GameObject[] { _left, _right };
+    }
 }

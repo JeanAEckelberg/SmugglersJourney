@@ -18,6 +18,9 @@ public class SystemsManager : MonoBehaviour
     //Start loop to find 'broken' systems in random time range
     void findSystems()
     {
+        foreach(GameObject sys in systems) { 
+            if (sys.GetComponent<SystemsController>().isBroken) { return; }
+        }
         int time;
         time = Random.Range(minTime, maxTime);
         StartCoroutine(SystemBreak(time));
