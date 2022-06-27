@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SystemsController : MonoBehaviour
 {
-    public GameObject part;
-    public GameObject tool;
+    public GameObject Part;
+    public GameObject Tool;
     public bool isBroken;
 
     //100 is full resistance, 0 is none
@@ -24,15 +25,16 @@ public class SystemsController : MonoBehaviour
         else
         {
             this.isBroken = true;
-            Debug.Log(gameObject.name + " is broken. Bring a " + tool.name + " and a " + part.name + " to fix it.");
+            Debug.Log(gameObject.name + " is broken. Bring a " + Tool.name + " and a " + Part.name + " to fix it.");
         }
     }
 
-    public string Fix(GameObject[] inventory) { 
-        if(!Array.Exists(inventory, item => item == this.part) && !Array.Exists(inventory, item => item == this.tool)) { return "You need a different part and tool to fix this system."; }
-        if(!Array.Exists(inventory, item => item == this.part)) { return "You need a different part to fix this system."; }
-        if(!Array.Exists(inventory, item => item == this.tool)) { return "You need a different tool to fix this system."; }
+    public string Fix(GameObject[] inventory) {
+        if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)")) && !Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different part and tool to fix this system."; }
+        if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)"))) { return "You need a different part to fix this system."; }
+        if(!Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different tool to fix this system."; }
         this.isBroken = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>().ConsumeInventory();
         return "You have fixed this system.";
 
     }

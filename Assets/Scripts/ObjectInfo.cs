@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ObjectInfo : MonoBehaviour
 {
+    public ItemType itemName = ItemType.None;
     public bool grabbable = true;
     private bool _equipped;
     public bool Equipped
@@ -23,4 +24,18 @@ public class ObjectInfo : MonoBehaviour
         grabbable = true;
         _equipped = false;
     }
+}
+
+public enum ItemType
+{
+    None,
+    Wrench,
+    Hammer,
+    Screwdriver,
+    WireStripper,
+    PowerCoil,
+    WiringHarness,
+    NavComputer,
+    MetalSheet,
+    Pipe
 }
