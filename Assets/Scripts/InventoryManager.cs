@@ -69,4 +69,10 @@ public class InventoryManager : MonoBehaviour
     {
         return new GameObject[] { _left, _right };
     }
+
+    public void ConsumeInventory()
+    {
+        Destroy(_left);
+        Destroy(_right);
+    }
 }
