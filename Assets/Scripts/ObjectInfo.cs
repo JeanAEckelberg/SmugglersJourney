@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ObjectInfo : MonoBehaviour
 {
-    public ItemType itemName = ItemType.None;
     public bool grabbable = true;
     private bool _equipped;
     public bool Equipped

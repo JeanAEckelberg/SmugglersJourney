@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class SystemsController : MonoBehaviour
 {
@@ -14,6 +14,13 @@ public class SystemsController : MonoBehaviour
     //100 is full resistance, 0 is none
     [SerializeField] int resistance;
     private bool gameOver = false;
+    private Text systemsText;
+    private Text timerText;
+
+    private void Start(){ 
+        systemsText = GameObject.Find("SystemsText").GetComponent<Text>();
+        timerText = GameObject.Find("TimerText").GetComponent<Text>();
+    }
 
     public void Break()
     {
@@ -28,7 +35,7 @@ public class SystemsController : MonoBehaviour
         {
             this.timeLeft = failTime;
             this.isBroken = true;
-            Debug.Log(gameObject.name + " is broken. Bring a " + Tool.name + " and a " + Part.name + " to fix it.");
+            systemsText.text = gameObject.name.ToLower() + " is broken. Bring a " + Tool.name.ToLower() + " and a " + Part.name.ToLower() + " to fix it.";
         }
     }
 
@@ -39,24 +46,29 @@ public class SystemsController : MonoBehaviour
             if (timeLeft > 0)
             {
                 timeLeft -= Time.deltaTime;
+                timerText.text = "Time Left:\n" + Mathf.FloorToInt(timeLeft % 60);
             }
             else
             {
                 this.isBroken = false;
                 this.gameOver = true;
+                timerText.text = "";
                 Debug.Log("Game Over");
             }
         }
     }
 
-    public bool isGameOver() { return this.gameOver; }    
+    public bool isGameOver() { return this.gameOver; }
 
     public string Fix(GameObject[] inventory) {
+        if (inventory[0] == null || inventory[1] == null) { return "You need to grab a part and tool to fix this system"; }
         if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)")) && !Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different part and tool to fix this system."; }
         if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)"))) { return "You need a different part to fix this system."; }
         if(!Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different tool to fix this system."; }
         this.isBroken = false;
         this.timeLeft = failTime;
+        timerText.text = "";
+        systemsText.text = "";
         InventoryManager playerInv = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         playerInv.ConsumeInventory();
         return "You have fixed this system.";
