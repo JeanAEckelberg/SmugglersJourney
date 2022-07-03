@@ -5,9 +5,8 @@ using UnityEngine;
 public class SystemsManager : MonoBehaviour
 {
     private List<GameObject> systems;
-
+    private bool canBreak;
     [SerializeField] int minTime, maxTime;
-
     void Start()
     {
         systems = new List<GameObject>();
@@ -18,8 +17,11 @@ public class SystemsManager : MonoBehaviour
     //Start loop to find 'broken' systems in random time range
     void findSystems()
     {
-        foreach(GameObject sys in systems) { 
-            if (sys.GetComponent<SystemsController>().isBroken) { return; }
+        this.canBreak = true;
+        foreach(GameObject sys in systems) {
+            SystemsController controller = sys.GetComponent<SystemsController>();
+            if (controller.isBroken) {this.canBreak = false;}
+            if (controller.isGameOver()) { return; }
         }
         int time;
         time = Random.Range(minTime, maxTime);
@@ -31,7 +33,8 @@ public class SystemsManager : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         int systemNum = Random.Range(0, systems.Count);
-        systems[systemNum].GetComponent<SystemsController>().Break();
+        if (this.canBreak) { systems[systemNum].GetComponent<SystemsController>().Break(); }
+
         findSystems();
     }
 
