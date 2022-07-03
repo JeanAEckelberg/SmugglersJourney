@@ -21,7 +21,6 @@ public class SystemsManager : MonoBehaviour
         foreach(GameObject sys in systems) {
             SystemsController controller = sys.GetComponent<SystemsController>();
             if (controller.isBroken) {this.canBreak = false;}
-            if (controller.isGameOver()) { return; }
         }
         int time;
         time = Random.Range(minTime, maxTime);

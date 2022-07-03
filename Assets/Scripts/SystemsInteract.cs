@@ -25,8 +25,8 @@ public class SystemsInteract : MonoBehaviour, Interactable
 
     public void PlayerFocus()
     {
-        if (sysController.isBroken) { this.interactText.text = "Press E to attempt to fix the " + gameObject.name.ToLower(); }
-        else { this.interactText.text = "The " + gameObject.name.ToLower() + " seems to be working properly"; }
+        if (sysController.isBroken) { this.interactText.text = "Press E to attempt to fix the " + gameObject.name; }
+        else { this.interactText.text = "The " + gameObject.name + " seems to be working properly"; }
     }
 
     public void PlayerUnfocus(){this.interactText.text = "";}

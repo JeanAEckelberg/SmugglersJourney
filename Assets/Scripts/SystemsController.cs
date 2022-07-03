@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SystemsController : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class SystemsController : MonoBehaviour
     private float timeLeft;
     //100 is full resistance, 0 is none
     [SerializeField] int resistance;
-    private bool gameOver = false;
     private Text systemsText;
     private Text timerText;
 
@@ -35,7 +35,7 @@ public class SystemsController : MonoBehaviour
         {
             this.timeLeft = failTime;
             this.isBroken = true;
-            systemsText.text = gameObject.name.ToLower() + " is broken. Bring a " + Tool.name.ToLower() + " and a " + Part.name.ToLower() + " to fix it.";
+            systemsText.text = gameObject.name + " is broken. Bring a " + Tool.name.ToLower() + " and a " + Part.name.ToLower() + " to fix it.";
         }
     }
 
@@ -51,14 +51,13 @@ public class SystemsController : MonoBehaviour
             else
             {
                 this.isBroken = false;
-                this.gameOver = true;
                 timerText.text = "";
-                Debug.Log("Game Over");
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
     }
-
-    public bool isGameOver() { return this.gameOver; }
 
     public string Fix(GameObject[] inventory) {
         if (inventory[0] == null || inventory[1] == null) { return "You need to grab a part and tool to fix this system"; }
