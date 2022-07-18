@@ -1,35 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SystemsInteract : MonoBehaviour, Interactable
 {
     public bool grabbable { get { return grabbable; } set { return; } }
     public bool Equipped { get { return Equipped; } set { return; }}
 
+    private Text interactText;
     private SystemsController sysController;
     private InventoryManager invManager;
+
     public void Awake()
     {
+        this.interactText = GameObject.Find("InteractText").GetComponent<Text>();
         this.sysController = GetComponent<SystemsController>();
         this.invManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         Equipped = false;
         grabbable = false;
     }
 
-    public void Interact()
-    {
-        if (this.sysController.isBroken){Debug.Log(this.sysController.Fix(invManager.GetInventory()));}
-        else { Debug.Log("This system is not broken"); }
-    }
+    public void Interact(){if (this.sysController.isBroken){ this.interactText.text = this.sysController.Fix(invManager.GetInventory());}}
 
     public void PlayerFocus()
     {
-        Debug.Log("Focus");
+        if (sysController.isBroken) { this.interactText.text = "Press E to attempt to fix the " + gameObject.name; }
+        else { this.interactText.text = "The " + gameObject.name + " seems to be working properly"; }
     }
 
-    public void PlayerUnfocus()
-    {
-        Debug.Log("Unfocus");
-    }
+    public void PlayerUnfocus(){this.interactText.text = "";}
 }

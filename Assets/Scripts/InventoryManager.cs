@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    private GameObject _left, _right;
+    private GameObject _left, _right = null;
     private GameObject _mainCam;
     private GameObject _toPickup;
     private RaycastHit hit;
@@ -14,7 +14,7 @@ public class InventoryManager : MonoBehaviour
     
     private Vector3 _handPosition, _handRotation;
     private GameObject _hand;
-    
+
     private void Start()
     {
         _mainCam = GameObject.Find("Main Camera");
