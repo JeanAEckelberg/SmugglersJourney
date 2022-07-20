@@ -1,16 +1,14 @@
 using UnityEngine;
 
 
-public class ObjectInfo : MonoBehaviour
+public class ObjectInfo : MonoBehaviour, IInteractable
 {
-    public bool grabbable = true;
+    public bool Grabbable { get; set; }
     private bool _equipped;
+    private ImprovedInventoryManager _inventory;
     public bool Equipped
     {
-        get
-        {
-            return _equipped;
-        }
+        get => _equipped;
         set
         {
             _equipped = value;
@@ -20,8 +18,24 @@ public class ObjectInfo : MonoBehaviour
 
     private void Awake()
     {
-        grabbable = true;
+        Grabbable = true;
         _equipped = false;
+        _inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ImprovedInventoryManager>();
+    }
+
+    public void PlayerFocus()
+    {
+        
+    }
+
+    public void PlayerUnfocus()
+    {
+        
+    }
+
+    public void Interact()
+    {
+        _inventory.PickUp(gameObject);
     }
 }
 

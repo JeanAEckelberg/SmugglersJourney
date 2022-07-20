@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Interactable
+public interface IInteractable
 {
-    public bool grabbable { get; set; }
+    public bool Grabbable { get; set; }
     public bool Equipped { get; set; }
 
     public abstract void Interact();

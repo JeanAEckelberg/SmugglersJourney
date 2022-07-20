@@ -3,31 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SystemsInteract : MonoBehaviour, Interactable
+public class SystemsInteract : MonoBehaviour, IInteractable
 {
-    public bool grabbable { get { return grabbable; } set { return; } }
-    public bool Equipped { get { return Equipped; } set { return; }}
+    public bool Grabbable { get => Grabbable;
+        set { return; } }
+    public bool Equipped { get => Equipped;
+        set { return; }}
 
-    private Text interactText;
-    private SystemsController sysController;
-    private InventoryManager invManager;
+    private Text _interactText;
+    private SystemsController _sysController;
+    private ImprovedInventoryManager _invManager;
 
     public void Awake()
     {
-        this.interactText = GameObject.Find("InteractText").GetComponent<Text>();
-        this.sysController = GetComponent<SystemsController>();
-        this.invManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        this._interactText = GameObject.Find("InteractText").GetComponent<Text>();
+        this._sysController = GetComponent<SystemsController>();
+        this._invManager = GameObject.FindGameObjectWithTag("Player").GetComponent<ImprovedInventoryManager>();
         Equipped = false;
-        grabbable = false;
+        Grabbable = false;
     }
 
-    public void Interact(){if (this.sysController.isBroken){ this.interactText.text = this.sysController.Fix(invManager.GetInventory());}}
+    public void Interact(){if (_sysController.isBroken){ _interactText.text = _sysController.Fix(_invManager.GetInventory());}}
 
     public void PlayerFocus()
     {
-        if (sysController.isBroken) { this.interactText.text = "Press E to attempt to fix the " + gameObject.name; }
-        else { this.interactText.text = "The " + gameObject.name + " seems to be working properly"; }
+        if (_sysController.isBroken) { _interactText.text = "Press E to attempt to fix the " + gameObject.name; }
+        else { _interactText.text = "The " + gameObject.name + " seems to be working properly"; }
     }
 
-    public void PlayerUnfocus(){this.interactText.text = "";}
+    public void PlayerUnfocus(){_interactText.text = "";}
 }

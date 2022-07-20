@@ -48,7 +48,7 @@ public class InventoryManager : MonoBehaviour
         
         if (!hit.collider.gameObject.TryGetComponent(out ObjectInfo info)) return;
         //if (!hit.collider.gameObject.TryGetComponent(out Interactable info)) return;
-        if(!info.grabbable) return;
+        if(!info.Grabbable) return;
         
         Drop();
         _toPickup = hit.collider.gameObject;
