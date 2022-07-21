@@ -1,39 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryDisplayController : MonoBehaviour
 {
-    [SerializeField] private GameObject Icon;
+    [SerializeField] private GameObject icon;
     private GameObject[] _bar = new GameObject[10];
+
+    [SerializeField] private GameObject selector;
+    private int _selection;
+    
 
     [SerializeField] private float start = -250;
     [SerializeField] private float spacing = 60;
     [SerializeField] private float size = 50;
-
-    // Start is called before the first frame update
-    void Start()
+    
+    void Awake()
     {
         for (int i = 0; i < _bar.Length; i++)
         {
-            _bar[i] = Instantiate(Icon);
+            _bar[i] = Instantiate(icon);
             _bar[i].transform.SetParent(transform);
             _bar[i].GetComponent<RectTransform>().localPosition = new Vector3(start + i * spacing, 0, 0);
             //_bar[i].GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
         }
+        selector.transform.localPosition = _bar[0].transform.localPosition;
     }
-
-    // Update is called once per frame
+    
     IEnumerator UpdateDisplay(int index)
     {
-        foreach (var t in _bar)
-        {
-            t.GetComponent<Image>().color = Color.white;
-        }
 
-        _bar[index].GetComponent<Image>().color = Color.red;
+        selector.transform.localPosition = _bar[index].transform.localPosition;
         yield break;
     }
 }

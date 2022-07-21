@@ -60,16 +60,20 @@ public class SystemsController : MonoBehaviour
     }
 
     public string Fix(GameObject[] inventory) {
-        if (inventory[0] == null || inventory[1] == null) { return "You need to grab a part and tool to fix this system"; }
-        if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)")) && !Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different part and tool to fix this system."; }
-        if(!Array.Exists(inventory, item => item.name.Equals(this.Part.name+"(Clone)"))) { return "You need a different part to fix this system."; }
-        if(!Array.Exists(inventory, item => item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different tool to fix this system."; }
+        //if (inventory[0] == null || inventory[1] == null) { return "You need to grab a part and tool to fix this system"; }
+        if(!Array.Exists(inventory, item => item != null && item.name.Equals(this.Part.name+"(Clone)")) 
+           && !Array.Exists(inventory, item => item != null && item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different part and tool to fix this system."; }
+        if(!Array.Exists(inventory, item => item != null && item.name.Equals(this.Part.name+"(Clone)"))) { return "You need a different part to fix this system."; }
+        if(!Array.Exists(inventory, item => item != null && item.name.Equals(this.Tool.name+"(Clone)"))) { return "You need a different tool to fix this system."; }
         this.isBroken = false;
         this.timeLeft = failTime;
         timerText.text = "";
         systemsText.text = "";
-        InventoryManager playerInv = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
-        playerInv.ConsumeInventory();
+        ImprovedInventoryManager playerInv = GameObject.FindGameObjectWithTag("Player").GetComponent<ImprovedInventoryManager>();
+        int index1 = Array.FindIndex(inventory, item => item != null && item.name.Equals(Part.name + "(Clone)")),
+            index2 = Array.FindIndex(inventory, item => item != null && item.name.Equals(Tool.name + "(Clone)"));
+        playerInv.ConsumeInventorySlot(index1);
+        playerInv.ConsumeInventorySlot(index2);
         return "You have fixed this system.";
 
     }

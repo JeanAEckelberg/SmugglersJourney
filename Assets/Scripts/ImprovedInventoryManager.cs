@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class ImprovedInventoryManager : MonoBehaviour
@@ -70,7 +71,12 @@ public class ImprovedInventoryManager : MonoBehaviour
 
     public GameObject[] GetInventory()
     {
-        return _inventory;
+        GameObject[] temp = new GameObject[_inventory.Length];
+        for( int i = 0; i < _inventory.Length; i++)
+        {
+            temp[i] = _inventory[i];
+        }
+        return temp;
     }
 
     public void ConsumeInventory()
@@ -78,8 +84,24 @@ public class ImprovedInventoryManager : MonoBehaviour
       for(int i = 0; i < _inventory.Length; i++)
       {
           _inventory[i] = null;
+          Destroy(_hand);
+          _hand = null;
       }
-      
+
+      _size = 0;
+    }
+
+    public void ConsumeInventorySlot(int slot)
+    {
+        if(slot < 0 || slot >= _inventory.Length) return;
+        if (slot == _index)
+        {
+            Destroy(_hand);
+            _hand = null;
+        }
+        _inventory[slot] = null;
+
+        _size--;
     }
 
     private void Swap()

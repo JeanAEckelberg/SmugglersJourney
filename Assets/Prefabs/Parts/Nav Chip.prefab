@@ -127,5 +127,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23936c0ecfc37304e82a6eaa9b9f92d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 1
-  grabbable: 1
+  itemName: Nav Chip
